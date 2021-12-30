@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +13,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('search');
 });
+
+Route::get('/search', [App\Http\Controllers\GitCommunicationController::class, 'search']);
+Route::get('/user', [App\Http\Controllers\GitCommunicationController::class, 'showUser']);
+Route::get('/repo', [App\Http\Controllers\GitCommunicationController::class, 'showRepo']);
