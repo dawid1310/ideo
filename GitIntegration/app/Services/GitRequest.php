@@ -18,17 +18,29 @@ class GitRequest
         $response = Http::get($query);
         if ($response->json()) {
             $this->response = $response->json()['items'];
+            return true;
         }
+        return false;
     }
 
-    public function show($type, $name)
+    public function show($user, $repo = null)
     {
-        if($type == 'user'){
-            $query = $this->addres . 'users/' . $name;
+        if(!$repo){
+            $query = $this->addres . 'users/' . $user;
+            if(Http::get($query .'/repos')->json())
+                $this->response = Http::get($query .'/repos')->json();
+            else
+                $this->response[0]['owner'] = Http::get($query)->json();
+            return true;
         }
         else{
-            $query = $this->addres . 'repos/' . $name;
+            $query = $this->addres . 'repos/' . $user . '/' . $repo;
+            $this->response['repo'] = Http::get($query)->json();
+            $this->response['contributors'] = Http::get($query . '/contributors')->json();
+            $this->response['commits'] = Http::get($query . '/commits')->json();
+            return true;
         }
         
+        return false;
     }
 }

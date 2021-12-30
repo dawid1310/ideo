@@ -28,12 +28,20 @@ class GitCommunicationController extends Controller
     {
         $user = $_GET['login'];
         $gitRequest = new GitRequest();
+        $gitRequest->show($user);
+        //dd($gitRequest->response);
+        return view('user', ['user' => $gitRequest->response[0]['owner'], 'repos' => $gitRequest->response]);
     }
 
 
     public function showRepo()
     {
+
         $repo = $_GET['name'];
+        $user = $_GET['login'];
         $gitRequest = new GitRequest();
+        $gitRequest->show($user, $repo);
+        ///dd($gitRequest->response['repo']);
+        return view('repo', ['repo' => $gitRequest->response['repo'], 'contributors' => $gitRequest->response['contributors'], 'commits' => $gitRequest->response['commits']]);
     }
 }
